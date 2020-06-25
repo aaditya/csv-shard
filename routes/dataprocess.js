@@ -26,7 +26,7 @@ const processHandler = async (req, res) => {
 
         jsonArr.forEach(data => {
             let keys = Object.keys(data);
-            let existing = finalArr.find(o => o["Email"].toLowerCase() === data["Email"].toLowerCase());
+            let existing = finalArr.find(o => (o["Email"] || o["email"]).toLowerCase() === (data["Email"] || data["email"]).toLowerCase());
             if (existing) {
                 finalHeaders.forEach((text) => {
                     if (text === "Registration Time") {
@@ -53,7 +53,8 @@ const processHandler = async (req, res) => {
         res.status(200).send(csv);
     } catch (err) {
         res.status(500).json({
-            message: "Server Error, Please try again."
+            message: "Server Error, Please try again.",
+            err: err.message
         });
     }
 }
