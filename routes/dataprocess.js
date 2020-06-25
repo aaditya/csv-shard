@@ -48,9 +48,13 @@ const processHandler = async (req, res) => {
         const parser = new Parser();
         const csv = parser.parse(finalArr);
 
-        res.send(csv);
+        res.setHeader('Content-disposition', 'attachment; filename=data.csv');
+        res.set('Content-Type', 'text/csv');
+        res.status(200).send(csv);
     } catch (err) {
-        res.status(500).send("SERVER_FAIL");
+        res.status(500).json({
+            message: "Server Error, Please try again."
+        });
     }
 }
 
